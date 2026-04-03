@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Meta Tags για Social Media (Viber, FB, κλπ) -->
     <title>Η Φιλία στο δικό μας Σύμπαν - 2ο Γυμνάσιο Τρικάλων</title>
     <meta name="description" content="Μια ψηφιακή συλλογή ποιημάτων για την αξία της φιλίας από τους μαθητές των τμημάτων Β1 & Β2.">
     <meta property="og:title" content="Η Φιλία στο δικό μας Σύμπαν">
     <meta property="og:description" content="Ψηφιακή συλλογή ποιημάτων των μαθητών του 2ου Γυμνασίου Τρικάλων.">
-    <!-- Η εισαγωγική εικόνα για την προεπισκόπηση του link -->
     <meta property="og:image" content="https://drive.google.com/thumbnail?id=1bGjMZQklRTZWHGIgy1tHRlXFF-DX2p3V&sz=w800">
     <meta property="og:type" content="website">
 
@@ -43,9 +41,10 @@
         }
         
         @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); } }
-        /* Διόρθωση αιώρησης: Κίνηση ΜΟΝΟ στον άξονα Y για απόλυτη συμμετρία */
-        @keyframes float-slow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        @keyframes float-delayed { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(8px); } }
+        
+        /* Διόρθωση οριζόντιας κίνησης: Ισορροπημένη αιώρηση αριστερά-δεξιά για να μην "φεύγει" από το κέντρο */
+        @keyframes float-slow { 0%, 100% { transform: translateY(0px) translateX(-3px); } 50% { transform: translateY(-8px) translateX(3px); } }
+        @keyframes float-delayed { 0%, 100% { transform: translateY(0px) translateX(2px) rotate(-1deg); } 50% { transform: translateY(8px) translateX(-2px) rotate(1deg); } }
         
         .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
         .animate-float-delayed { animation: float-delayed 10s ease-in-out infinite; }
@@ -62,7 +61,7 @@
 
         /* ΣΤΑΘΕΡΑ ΒΕΛΗ: Απόλυτα καρφωμένα και υπολογισμένα */
         .nav-arrow {
-            position: absolute; top: 50%; transform: translateY(-50%); z-index: 50;
+            position: absolute; transform: translateY(-50%); z-index: 50;
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2); color: white;
             border-radius: 9999px; cursor: pointer;
@@ -70,12 +69,14 @@
         }
         .nav-arrow:hover { background: rgba(255, 255, 255, 0.2); border-color: #facc15; color: #facc15; }
         
+        /* Στον υπολογιστή παραμένουν στο κέντρο (50%) */
         @media (min-width: 768px) {
-            .nav-arrow { padding: 0.75rem; }
+            .nav-arrow { padding: 0.75rem; top: 50%; }
             .arrow-left { left: 1.5rem; } .arrow-right { right: 1.5rem; }
         }
+        /* Στο κινητό ανεβαίνουν στο ύψος της εικόνας (32%) */
         @media (max-width: 768px) {
-            .nav-arrow { padding: 0.5rem; opacity: 0.8; }
+            .nav-arrow { padding: 0.5rem; opacity: 0.8; top: 32%; }
             .arrow-left { left: 0.5rem; } .arrow-right { right: 0.5rem; }
         }
 
@@ -92,12 +93,10 @@
 </head>
 <body>
 
-<!-- WIDGET ΚΑΡΤΑ: Σταθερό πλάτος (96vw κινητό / 90vw PC). -->
 <div id="space-poetry-widget" class="w-[96vw] md:w-[90vw] max-w-5xl mx-auto flex flex-col items-center justify-center shadow-2xl relative h-[90vh] min-h-[560px] max-h-[700px] md:h-[580px] rounded-[1.5rem] md:rounded-[2rem] border border-white/10">
     
     <div id="yt-player-container"><div id="yt-player"></div></div>
 
-    <!-- Music Controls - Καρφωμένα πάνω στο widget -->
     <div class="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/20 shadow-lg max-w-[85%] md:max-w-none w-max">
         <button id="music-btn" class="text-white hover:text-yellow-400 focus:outline-none transition-colors flex items-center justify-center p-0 bg-transparent border-0 cursor-pointer">
             <svg id="play-icon" class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg>
@@ -106,16 +105,13 @@
         <span class="text-white/80 text-[8px] md:text-[10px] uppercase tracking-widest truncate font-medium">Ο ΜΙΚΡΟΣ ΠΡΙΓΚΙΠΑΣ - ΕΥΑΝΘΙΑ ΡΕΜΠΟΥΤΣΙΚΑ</span>
     </div>
 
-    <!-- Βέλη Πλοήγησης -->
     <button id="prev-btn" class="nav-arrow arrow-left"><svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
     <button id="next-btn" class="nav-arrow arrow-right"><svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
 
     <div class="stars-container" id="stars"></div>
 
-    <!-- MAIN CONTENT - ΜΑΘΗΜΑΤΙΚΟ ΚΛΕΙΔΩΜΑ (Shrink-0 και Exact Widths) -->
     <div id="content-wrapper" class="relative z-10 w-full flex flex-col md:flex-row items-center justify-center gap-5 md:gap-16 min-w-0 mt-4 md:mt-0">
         
-        <!-- Image Section: Απολύτως φιξαρισμένο μέγεθος (Έγινε w-48 h-48 στο κινητό για να φαίνεται αρκετά μεγαλύτερη) -->
         <div class="shrink-0 w-48 h-48 md:w-64 md:h-64 relative order-1 flex justify-center items-center">
             <div class="relative group animate-float-slow w-full h-full">
                 <div class="absolute -inset-4 bg-yellow-500/10 rounded-full blur-2xl"></div>
@@ -126,8 +122,6 @@
             </div>
         </div>
 
-        <!-- Text Section: ΜΑΘΗΜΑΤΙΚΟ ΚΛΕΙΔΩΜΑ. 
-             Στο κινητό ελαττώσαμε το ύψος σε h-[280px] για να ισορροπήσει απόλυτα την μεγαλύτερη εικόνα. -->
         <div class="shrink-0 w-[calc(100%-6rem)] md:w-[480px] lg:w-[500px] h-[280px] md:h-[380px] order-2 min-w-0">
             <div class="relative animate-float-delayed w-full h-full">
                 <div class="bg-white/10 backdrop-blur-xl px-4 md:px-8 py-4 md:py-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/20 shadow-xl w-full h-full flex flex-col break-words overflow-hidden box-border">
@@ -153,7 +147,6 @@
         </div>
     </div>
 
-    <!-- Navigation Dots - Απόλυτο Μαθηματικό Κεντράρισμα -->
     <div id="nav-dots" class="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex justify-center items-center gap-1.5 md:gap-2 w-max max-w-[90vw] flex-wrap z-20"></div>
 </div>
 
@@ -202,7 +195,6 @@
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // ΑΚΡΙΒΩΣ ΤΑ ΔΕΔΟΜΕΝΑ ΣΟΥ
     const POEMS = [
       {title: "<span class='block text-left w-full'>Η φιλία στο δικό μας σύμπαν:<br>Ψηφιακή συλλογή ποιημάτων</span>", category: "", text: "2ο Γυμνάσιο Τρικάλων\nΣχολικό έτος 2025-26\nΤμήματα Β1 & Β2\n\nΜια συνεργατική δημιουργία των μαθητών μας για την αξία της φιλίας.", author: "", label: "", image: "https://drive.google.com/thumbnail?id=1bGjMZQklRTZWHGIgy1tHRlXFF-DX2p3V&sz=w800", duration: 12000},
       {title: "Φιλία", category: "", text: "Σε κάθε βόλτα η καρδιά ξανοίγει,\nμε γέλια που διώχνουν κάθε σύννεφο βαρύ,\nεκεί που η εμπιστοσύνη ρίζες έχει πήξει,\nκι η φιλία ανθίζει σπάνια και γερή.\n\nΜε σεβασμό στα «θέλω» και στα «πρέπει»,\nαναμνήσεις χτίζουμε σε κάθε μας στιγμή,\nο φίλος με τα μάτια της ψυχής σε βλέπει,\nπάντα ειλικρινή και στο πλευρό σου μια ζωή.", author: "Α.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1Zkwz6rdWu278wIOaHMBjxXMiYUtVFN0I&sz=w800", duration: 20000},
