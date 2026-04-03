@@ -16,13 +16,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { corePlugins: { preflight: false } }</script>
     <style>
-        /* CSS για πλήρες κεντράρισμα και σταθερότητα σε κάθε οθόνη */
+        /* CSS για πλήρες κεντράρισμα - Σκούρο γκρι φόντο πίσω από το μαύρο widget */
         html, body { 
             height: 100%; 
             margin: 0; 
             padding: 0; 
-            background-color: black; 
-            overflow: hidden; /* Κλειδώνει το scrolling */
+            background-color: #0a0a0a; 
+            overflow: hidden; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -31,7 +31,6 @@
         #space-poetry-widget { 
             background-color: black; position: relative; overflow: hidden; 
             color: white; font-family: ui-sans-serif, system-ui, sans-serif;
-            width: 100%; height: 100%; /* Προσαρμόζεται στο 100% της οθόνης πάντα */
         }
 
         .stars-container {
@@ -42,9 +41,11 @@
             position: absolute; background: white; border-radius: 50%; opacity: 0.5;
             animation: twinkle 3s infinite ease-in-out;
         }
+        
         @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); } }
-        @keyframes float-slow { 0%, 100% { transform: translateY(0px) translateX(0px); } 50% { transform: translateY(-12px) translateX(8px); } }
-        @keyframes float-delayed { 0%, 100% { transform: translateY(0px) translateX(0px) rotate(-1deg); } 50% { transform: translateY(8px) translateX(-4px) rotate(1deg); } }
+        /* Διόρθωση αιώρησης: Κίνηση ΜΟΝΟ στον άξονα Y για να μην χαλάει το κεντράρισμα στο κινητό */
+        @keyframes float-slow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        @keyframes float-delayed { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(8px); } }
         
         .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
         .animate-float-delayed { animation: float-delayed 10s ease-in-out infinite; }
@@ -59,7 +60,7 @@
         .nav-dot { transition: all 0.3s ease; cursor: pointer; }
         .nav-dot:hover { background-color: rgba(255, 255, 255, 0.8) !important; }
 
-        /* ΣΤΑΘΕΡΑ ΒΕΛΗ: Καρφωμένα στη μέση-άκρες */
+        /* ΣΤΑΘΕΡΑ ΒΕΛΗ: Καρφωμένα στη μέση-άκρες του widget */
         .nav-arrow {
             position: absolute; top: 50%; transform: translateY(-50%); z-index: 50;
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px);
@@ -90,13 +91,13 @@
 </head>
 <body>
 
-<!-- WIDGET ΚΑΛΥΠΤΕΙ ΟΛΟ ΤΟ ΥΨΟΣ & ΠΛΑΤΟΣ ΤΗΣ ΟΘΟΝΗΣ -->
-<div id="space-poetry-widget" class="flex flex-col items-center justify-center shadow-2xl">
+<!-- WIDGET ΚΑΡΤΑ: Σταθερό πλάτος (96vw κινητό / 90vw PC) & Δυναμικό Ύψος (95vh) για να μην κρύβεται τίποτα! -->
+<div id="space-poetry-widget" class="w-[96vw] md:w-[90vw] max-w-5xl mx-auto flex flex-col items-center justify-center shadow-2xl relative h-[95vh] min-h-[480px] max-h-[680px] md:h-[560px] rounded-[1.5rem] md:rounded-[2rem] border border-white/10">
     
     <div id="yt-player-container"><div id="yt-player"></div></div>
 
-    <!-- Music Controls - Πάντα στο πάνω μέρος της οθόνης -->
-    <div class="absolute top-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-md px-2 md:px-4 py-1.5 md:py-2 rounded-full border border-white/20 shadow-lg max-w-[85%] md:max-w-none w-max">
+    <!-- Music Controls - Καρφωμένα πάνω στο widget -->
+    <div class="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 md:gap-3 bg-white/10 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/20 shadow-lg max-w-[85%] md:max-w-none w-max">
         <button id="music-btn" class="text-white hover:text-yellow-400 focus:outline-none transition-colors flex items-center justify-center p-0 bg-transparent border-0 cursor-pointer">
             <svg id="play-icon" class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg>
             <svg id="pause-icon" class="w-4 h-4 md:w-5 md:h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4h3v12H5zm6 0h3v12h-3z"/></svg>
@@ -110,13 +111,11 @@
 
     <div class="stars-container" id="stars"></div>
 
-    <!-- MAIN CONTENT - ΑΠΟΛΥΤΗ ΣΥΜΜΕΤΡΙΑ
-         Στο PC η εικόνα έχει σταθερό πλάτος και το κείμενο σταθερό πλάτος. 
-         Στο κινητό εφαρμόζεται flex-col και μπαίνουν στο κέντρο ακριβώς. -->
-    <div id="content-wrapper" class="relative z-10 w-full px-12 md:px-32 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-14 lg:gap-20">
+    <!-- MAIN CONTENT - ΑΠΟΛΥΤΗ ΣΥΜΜΕΤΡΙΑ ΚΑΙ ΤΕΛΕΙΟ PADDING -->
+    <div id="content-wrapper" class="relative z-10 w-full px-12 sm:px-16 md:px-32 flex flex-col md:flex-row items-center justify-center gap-5 md:gap-14 lg:gap-20 min-w-0">
         
-        <!-- Image Section: Σταθερές διαστάσεις (160px κινητό, 256px PC) -->
-        <div class="shrink-0 w-40 h-40 md:w-64 md:h-64 relative order-1 flex justify-center items-center">
+        <!-- Image Section: Μικρότερη στο κινητό (w-32) για να αφήνει χώρο, τέλεια στον υπολογιστή (w-64) -->
+        <div class="shrink-0 w-32 h-32 sm:w-36 sm:h-36 md:w-64 md:h-64 relative order-1 flex justify-center items-center">
             <div class="relative group animate-float-slow w-full h-full">
                 <div class="absolute -inset-4 bg-yellow-500/10 rounded-full blur-2xl"></div>
                 <div class="w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border-2 border-white/20 shadow-xl bg-gray-900 flex items-center justify-center relative">
@@ -126,24 +125,24 @@
             </div>
         </div>
 
-        <!-- Text Section: Σταθερό πλάτος 500px στο PC για απόλυτη ισορροπία -->
-        <div class="shrink-0 w-full max-w-[420px] md:max-w-none md:w-[500px] h-[330px] md:h-[380px] order-2">
+        <!-- Text Section: Προσαρμοσμένο ύψος στο κινητό (h-[280px]) για να μην κρύβονται τελείες/μουσική -->
+        <div class="shrink-0 w-full max-w-[360px] md:max-w-none md:w-[500px] h-[280px] sm:h-[300px] md:h-[380px] order-2 min-w-0">
             <div class="relative animate-float-delayed w-full h-full">
-                <div class="bg-white/10 backdrop-blur-xl px-5 md:px-8 py-5 md:py-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/20 shadow-xl w-full h-full flex flex-col break-words overflow-hidden box-border">
+                <div class="bg-white/10 backdrop-blur-xl px-4 md:px-8 py-4 md:py-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/20 shadow-xl w-full h-full flex flex-col break-words overflow-hidden box-border">
                     
                     <h2 id="poem-category" class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mb-1 empty:hidden shrink-0 min-h-[14px]"></h2>
                     
-                    <div class="min-h-[44px] md:min-h-[50px] flex items-center shrink-0">
+                    <div class="min-h-[40px] md:min-h-[50px] flex items-center shrink-0">
                         <h1 id="poem-title" class="text-base md:text-xl lg:text-2xl font-serif font-normal leading-tight m-0 line-clamp-2"></h1>
                     </div>
                     
                     <div class="w-full h-[1px] bg-white/20 my-2 md:my-3 shrink-0"></div>
                     
                     <div id="poem-scroll-container" class="flex-1 overflow-y-auto pr-1 md:pr-3 custom-scrollbar" style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;">
-                        <p id="poem-text" class="text-[12px] md:text-[14px] lg:text-[15px] text-blue-50 font-light italic leading-relaxed whitespace-pre-line m-0 pb-1"></p>
+                        <p id="poem-text" class="text-[11px] md:text-[14px] lg:text-[15px] text-blue-50 font-light italic leading-relaxed whitespace-pre-line m-0 pb-1"></p>
                     </div>
 
-                    <div class="mt-3 md:mt-4 text-right shrink-0 min-h-[40px] flex flex-col justify-end">
+                    <div class="mt-3 md:mt-4 text-right shrink-0 min-h-[36px] md:min-h-[40px] flex flex-col justify-end">
                         <p id="poem-author" class="text-yellow-500 font-serif text-sm md:text-lg m-0"></p>
                         <p id="author-label" class="text-white/40 text-[8px] mt-1 tracking-widest m-0 uppercase"></p>
                     </div>
@@ -152,8 +151,8 @@
         </div>
     </div>
 
-    <!-- Navigation Dots - Πάντα στο κάτω μέρος της οθόνης -->
-    <div id="nav-dots" class="absolute bottom-5 md:bottom-6 left-0 w-full flex justify-center items-center gap-1.5 md:gap-2 px-4 flex-wrap z-20"></div>
+    <!-- Navigation Dots - Καρφωμένα στο κάτω μέρος του widget -->
+    <div id="nav-dots" class="absolute bottom-4 md:bottom-6 left-0 w-full flex justify-center items-center gap-1.5 md:gap-2 px-4 flex-wrap z-20"></div>
 </div>
 
 <script>
