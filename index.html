@@ -59,6 +59,27 @@
         .nav-dot { transition: all 0.3s ease; cursor: pointer; }
         .nav-dot:hover { background-color: rgba(255, 255, 255, 0.8) !important; }
 
+        /* --- ΚΕΝΤΡΙΚΟΣ ΕΛΕΓΧΟΣ ΒΕΛΩΝ --- */
+        .nav-arrow {
+            position: absolute; transform: translateY(-50%); z-index: 50;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2); color: white;
+            border-radius: 9999px; cursor: pointer;
+            transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
+        }
+        .nav-arrow:hover { background: rgba(255, 255, 255, 0.2); border-color: #facc15; color: #facc15; }
+        
+        /* Στον υπολογιστή: Στη μέση ακριβώς (50%) */
+        @media (min-width: 768px) {
+            .nav-arrow { padding: 0.75rem; top: 50% !important; }
+            .arrow-left { left: 1.5rem; } .arrow-right { right: 1.5rem; }
+        }
+        /* Στο κινητό: Χαμηλά στην εικόνα (42%) */
+        @media (max-width: 768px) {
+            .nav-arrow { padding: 0.5rem; opacity: 0.8; top: 42% !important; }
+            .arrow-left { left: 0.5rem; } .arrow-right { right: 0.5rem; }
+        }
+
         #yt-player-container { position: absolute; width: 2px; height: 2px; bottom: 0; left: 0; opacity: 0.01; pointer-events: none; overflow: hidden; }
         
         .custom-scrollbar {
@@ -84,12 +105,8 @@
         <span class="text-white/80 text-[8px] md:text-[10px] uppercase tracking-widest truncate font-medium">Ο ΜΙΚΡΟΣ ΠΡΙΓΚΙΠΑΣ - ΕΥΑΝΘΙΑ ΡΕΜΠΟΥΤΣΙΚΑ</span>
     </div>
 
-    <button id="prev-btn" class="absolute -translate-y-1/2 z-50 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full cursor-pointer transition-all flex items-center justify-center hover:bg-white/20 hover:border-yellow-400 hover:text-yellow-400 p-2 md:p-3 opacity-80 md:opacity-100 top-[38%] md:top-[50%] left-2 md:left-6">
-        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-    </button>
-    <button id="next-btn" class="absolute -translate-y-1/2 z-50 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full cursor-pointer transition-all flex items-center justify-center hover:bg-white/20 hover:border-yellow-400 hover:text-yellow-400 p-2 md:p-3 opacity-80 md:opacity-100 top-[38%] md:top-[50%] right-2 md:right-6">
-        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    </button>
+    <button id="prev-btn" class="nav-arrow arrow-left"><svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+    <button id="next-btn" class="nav-arrow arrow-right"><svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
 
     <div class="stars-container" id="stars"></div>
 
@@ -184,7 +201,7 @@
       {title: "Ένα ποίημα για τη φιλία", category: "", text: "Φιλία είναι να ξέρεις\nπως κάποιος σε καταλαβαίνει,\nχωρίς εξηγήσεις,\nσε διορθώνει\nχωρίς να σε μειώνει\nκαι στέκεται σταθερός\nόταν ο κόσμος αλλάζει ρυθμό,\nδιάθεση, κατεύθυνση,\nαφήνοντας χώρο να μεγαλώνεις\nόπως είσαι, αληθινά,\nχωρίς φόβο απώλειας\nή περιττούς ρόλους.\n\nΟι φίλοι δεν υπόσχονται αιωνιότητες,\nμοιράζονται βάρος, χρόνο, σιωπή.\nΕίναι το μήνυμα αργά τη νύχτα,\nτο βλέμμα που λέει «ξέρω»,\nκαι η παρουσία που κάνει\nτο δύσκολο υποφερτό,\nτο καλό πιο καθαρό\nκαι τη ζωή λίγο πιο δική σου.", author: "Μ.Λ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1HUY7lnZyO54MAgwyFTBCscZkG18rRXMa&sz=w800", duration: 25000},
       {title: "Ο κήπος με τα τριαντάφυλλα", category: "", text: "Ένα αγόρι, ένας πρίγκιπας μικρός\nσυνάντησε ένα όμορφο λουλούδι.\nΠοτέ του δεν είχε δει σαν αυτό,\nΌμως, ένας κήπος με τριαντάφυλλα\nβρέθηκε μπροστά του.\nΌλα ίδια με το δικό του.\nΣτεναχώρια τον έπιασε μεγάλη.\nΑλλά απ' το πουθενά, εμφανίστηκε μια αλεπού.\nΗ οποία του είπε όλα τα μυστικά για τη φιλία.\nΤου εξήγησε για το ημέρωμα.\nΚαι τελικά, ο πρίγκιπας έμαθε πολλά.\nΈμαθε πως η φιλία είναι η πιο σημαντική.\nΠως όταν ημερώνεις κάποιον, αυτοί γίνονται μοναδικοί.\nΠως όλοι χρειαζόμαστε έναν φίλο να μας στηρίζει και να μας αγαπά.\nΤώρα, ο μικρός πρίγκιπας ξέρει.\nΑυτό το τριαντάφυλλο που ημέρωσε, είναι το δικό του.", author: "Μ.Κ. & Ε.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=16dJPQCngi8PpmSy97RJxhDiPaWCdrp_Q&sz=w800", duration: 25000},
       {title: "Το στήριγμά μας", category: "", text: "Με το χέρι στην καρδιά\nσκέφτομαι βαθιά\nτον αγαπημένο μου το φίλο\nτο στήριγμά μου στη ζωή.\n\nΗ φιλία δένει πάντα\nτων ανθρώπων τις ζωές\nη αλήθεια στη φιλία\nείναι η πυξίδα\nγια να δείχνει τις χαρές.", author: "Γ.Π. & Γ.Λ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1jHFp6qlnYLb3f1ZoF6DcHvGpwFAZUZPb&sz=w800", duration: 18000},
-      {title: "Το σπάνιο λουλούδι", category: "", text: "Σαν το πιο σπάνιο λουλούδι στον κήπο της ζωής,\nη φιλία ανθίζει, δίχως να ζητά τιμή.\nΔεν είναι λόγια, αλλά πράξεις και σιωπή,\nένα χέρι σταθερό, όταν η νύχτα είναι σκοτεινή.\n\nΣτις χαρές γελάμε δυνατά,\nμα στις λύπες είναι ο φίλος εκεί \nσαν σωστός συνοδοιπόρος.\nΈ ένα βλέμμα φτάνει, για να πούμε \nόσα δεν ειπώθηκαν, \n μία αγκαλιά που γιατρεύει \nόσα μας πόνεσαν.\n\nΔεν μετράει ούτε ο χρόνος \nούτε η απόσταση\nη αληθινή φιλία αντέχει στον καιρό \nκαι στην φωτιά.\nΕίναι ένας καθρέπτης που δείχνει \nποιοι πραγματικά είμαστε.", author: "Ε.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1rGyeA-MLXFLjN_M2lgeABe1v3sqX1soA&sz=w800", duration: 22000},
+      {title: "Το σπάνιο λουλούδι", category: "", text: "Σαν το πιο σπάνιο λουλούδι στον κήπο της ζωής,\nη φιλία ανθίζει, δίχως να ζητά τιμή.\nΔεν είναι λόγια, αλλά πράξεις και σιωπή,\nένα χέρι σταθερό, όταν η νύχτα είναι σκοτεινή.\n\nΣτις χαρές γελάμε δυνατά,\nμα στις λύπες είναι ο φίλος εκεί \nσαν σωστός συνοδοιπόρος.\nΈνα βλέμμα φτάνει, για να πούμε \nόσα δεν ειπώθηκαν, \nμία αγκαλιά που γιατρεύει \nόσα μας πόνεσαν.\n\nΔεν μετράει ούτε ο χρόνος \nούτε η απόσταση\nη αληθινή φιλία αντέχει στον καιρό \nκαι στην φωτιά.\nΕίναι ένας καθρέπτης που δείχνει \nποιοι πραγματικά είμαστε.", author: "Ε.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1rGyeA-MLXFLjN_M2lgeABe1v3sqX1soA&sz=w800", duration: 22000},
       {title: "Η αθάνατη φιλία", category: "", text: "Φιλία λέξη ιερή\nφιλία λέξη θεία που γράφεται\nμες τις καρδιές και\nόχι στα βιβλία.\n\nΦιλία λέξη αθάνατη\nφιλία λέξη θεία\nπου γράφεται μες στις ζωές\nκαι όχι στα αρχεία.", author: "Χ.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=147fbtfNF3dAGvWCsFt-07wqLjvhcW534&sz=w800", duration: 15000},
       {title: "Ο φίλος", category: "", text: "Όταν τον φίλο σου πονάς\nη κουβέντα σου \nδεν σε αφήνει να κοιμηθείς\nκαι όταν ο φίλος\nσου στο πλάι σου \nσε συμπονάει, νιώθεις \nπως αυτή η στιγμή \nσε ταξιδεύει. \n\nΗ φιλία τόσο σημαντική \nόπου την ψάξεις\nόπου την σκάψεις \nσαν αυτήν δεν θα υπάρξει.", author: "Δ.Κ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1IBrjSwRT7PYXDKtPjpEQ-meyp9VrKlXc&sz=w800", duration: 18000},
       {title: "Ο μικρός πρίγκιπας", category: "", text: "Ο Μικρός Πρίγκιπας είχε ένα λουλούδι,\nένα τριαντάφυλλο μοναδικό στον κόσμο\nκαι τα βουνά του ήταν πέντε χιλιάδες,\nόλα τα ίδια σ' έναν μονάχα κήπο.\nΝόμιζε πως ήταν πλούσιος,\nότι ήταν το μοναδικό στον κόσμο\nκαι πέφτοντας χάμω στο γρασίδι, παραδέχτηκε μια αλήθεια.\nΤου έδωσε ένα πολύ σημαντικό μάθημα,\nπώς είναι να έχεις την ανάγκη του άλλου,\nπώς είναι να δημιουργείς δεσμό με άλλους.\nΤότε άρχισε να καταλαβαίνει, το λουλούδι ήταν το μοναδικό,\nη ζωή θα είναι μονότονη χωρίς αυτό.\nΕίδε ότι τα άλλα λουλούδια ήταν ίδια,\nδεν θα πέθαινε κανείς ποτέ γι' αυτά.\nΑυτό που έχει σημασία σε μία φιλία\nείναι να δεις την καρδιά του άλλου,\nη εξωτερική εμφάνιση δεν έχει καμία απολύτως σημασία.", author: "Μ.Λ. & Α.Κ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1sKQBulWvgsdRnYgUkmTE_TUellEcLXoe&sz=w800", duration: 30000},
