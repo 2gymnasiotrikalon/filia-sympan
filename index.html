@@ -43,7 +43,7 @@
         }
         
         @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); } }
-        /* Διόρθωση αιώρησης: Κίνηση ΜΟΝΟ στον άξονα Y για να μην χαλάει το κεντράρισμα στο κινητό */
+        /* Διόρθωση αιώρησης: Κίνηση ΜΟΝΟ στον άξονα Y για απόλυτη συμμετρία */
         @keyframes float-slow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
         @keyframes float-delayed { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(8px); } }
         
@@ -60,18 +60,19 @@
         .nav-dot { transition: all 0.3s ease; cursor: pointer; }
         .nav-dot:hover { background-color: rgba(255, 255, 255, 0.8) !important; }
 
-        /* ΣΤΑΘΕΡΑ ΒΕΛΗ: Καρφωμένα στη μέση-άκρες του widget */
+        /* ΣΤΑΘΕΡΑ ΒΕΛΗ: Απόλυτα καρφωμένα και υπολογισμένα */
         .nav-arrow {
             position: absolute; top: 50%; transform: translateY(-50%); z-index: 50;
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2); color: white;
-            padding: 0.75rem; border-radius: 9999px; cursor: pointer;
+            border-radius: 9999px; cursor: pointer;
             transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
         }
         .nav-arrow:hover { background: rgba(255, 255, 255, 0.2); border-color: #facc15; color: #facc15; }
         
         @media (min-width: 768px) {
-            .arrow-left { left: 2.5rem; } .arrow-right { right: 2.5rem; }
+            .nav-arrow { padding: 0.75rem; }
+            .arrow-left { left: 1.5rem; } .arrow-right { right: 1.5rem; }
         }
         @media (max-width: 768px) {
             .nav-arrow { padding: 0.5rem; opacity: 0.8; }
@@ -91,8 +92,8 @@
 </head>
 <body>
 
-<!-- WIDGET ΚΑΡΤΑ: Σταθερό πλάτος (96vw κινητό / 90vw PC) & Δυναμικό Ύψος (95vh) για να μην κρύβεται τίποτα! -->
-<div id="space-poetry-widget" class="w-[96vw] md:w-[90vw] max-w-5xl mx-auto flex flex-col items-center justify-center shadow-2xl relative h-[95vh] min-h-[480px] max-h-[680px] md:h-[560px] rounded-[1.5rem] md:rounded-[2rem] border border-white/10">
+<!-- WIDGET ΚΑΡΤΑ: Σταθερό πλάτος (96vw κινητό / 90vw PC). -->
+<div id="space-poetry-widget" class="w-[96vw] md:w-[90vw] max-w-5xl mx-auto flex flex-col items-center justify-center shadow-2xl relative h-[90vh] min-h-[560px] max-h-[700px] md:h-[580px] rounded-[1.5rem] md:rounded-[2rem] border border-white/10">
     
     <div id="yt-player-container"><div id="yt-player"></div></div>
 
@@ -111,11 +112,11 @@
 
     <div class="stars-container" id="stars"></div>
 
-    <!-- MAIN CONTENT - ΑΠΟΛΥΤΗ ΣΥΜΜΕΤΡΙΑ ΚΑΙ ΤΕΛΕΙΟ PADDING -->
-    <div id="content-wrapper" class="relative z-10 w-full px-12 sm:px-16 md:px-32 flex flex-col md:flex-row items-center justify-center gap-5 md:gap-14 lg:gap-20 min-w-0">
+    <!-- MAIN CONTENT - ΜΑΘΗΜΑΤΙΚΟ ΚΛΕΙΔΩΜΑ (Shrink-0 και Exact Widths) -->
+    <div id="content-wrapper" class="relative z-10 w-full flex flex-col md:flex-row items-center justify-center gap-5 md:gap-16 min-w-0">
         
-        <!-- Image Section: Μικρότερη στο κινητό (w-32) για να αφήνει χώρο, τέλεια στον υπολογιστή (w-64) -->
-        <div class="shrink-0 w-32 h-32 sm:w-36 sm:h-36 md:w-64 md:h-64 relative order-1 flex justify-center items-center">
+        <!-- Image Section: Απολύτως φιξαρισμένο μέγεθος -->
+        <div class="shrink-0 w-32 h-32 md:w-64 md:h-64 relative order-1 flex justify-center items-center">
             <div class="relative group animate-float-slow w-full h-full">
                 <div class="absolute -inset-4 bg-yellow-500/10 rounded-full blur-2xl"></div>
                 <div class="w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border-2 border-white/20 shadow-xl bg-gray-900 flex items-center justify-center relative">
@@ -125,8 +126,9 @@
             </div>
         </div>
 
-        <!-- Text Section: Προσαρμοσμένο ύψος στο κινητό (h-[280px]) για να μην κρύβονται τελείες/μουσική -->
-        <div class="shrink-0 w-full max-w-[360px] md:max-w-none md:w-[500px] h-[280px] sm:h-[300px] md:h-[380px] order-2 min-w-0">
+        <!-- Text Section: ΜΑΘΗΜΑΤΙΚΟ ΚΛΕΙΔΩΜΑ για να μην 'απλώνει' ΠΟΤΕ! 
+             Στο κινητό είναι ακριβώς 100% της οθόνης ΜΕΙΟΝ 96pixels (χώρος για τα βέλη). -->
+        <div class="shrink-0 w-[calc(100%-6rem)] md:w-[480px] lg:w-[500px] h-[300px] md:h-[380px] order-2 min-w-0">
             <div class="relative animate-float-delayed w-full h-full">
                 <div class="bg-white/10 backdrop-blur-xl px-4 md:px-8 py-4 md:py-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/20 shadow-xl w-full h-full flex flex-col break-words overflow-hidden box-border">
                     
