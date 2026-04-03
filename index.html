@@ -69,7 +69,7 @@
         .nav-arrow:hover { background: rgba(255, 255, 255, 0.2); border-color: #facc15; color: #facc15; }
         
         @media (min-width: 768px) {
-            .arrow-left { left: 1.5rem; } .arrow-right { right: 1.5rem; }
+            .arrow-left { left: 2rem; } .arrow-right { right: 2rem; }
         }
         @media (max-width: 768px) {
             .nav-arrow { padding: 0.5rem; opacity: 0.8; top: 50%; }
@@ -89,8 +89,8 @@
 </head>
 <body>
 
-<!-- W-95VW & MAX-W-5XL: ΑΥΣΤΗΡΟ κλείδωμα πλάτους, δεν επηρεάζεται ΠΟΤΕ από το περιεχόμενο -->
-<div id="space-poetry-widget" class="w-[95vw] md:w-[90vw] max-w-5xl mx-auto flex items-center justify-center pt-20 md:pt-4 pb-12 md:pb-4 shadow-2xl relative h-[650px] md:h-[520px]">
+<!-- ΑΥΣΤΗΡΟ κλείδωμα πλάτους: w-[92vw] στο κινητό αποτρέπει το ξεχείλωμα -->
+<div id="space-poetry-widget" class="w-[92vw] md:w-[90vw] max-w-5xl mx-auto flex items-center justify-center pt-20 md:pt-4 pb-12 md:pb-4 shadow-2xl relative h-[650px] md:h-[520px]">
     
     <div id="yt-player-container"><div id="yt-player"></div></div>
 
@@ -109,11 +109,11 @@
 
     <div class="stars-container" id="stars"></div>
 
-    <!-- ΤΕΡΑΣΤΙΟ PADDING (px-12 md:px-24) για να μην ακουμπάει ποτέ τα βέλη το περιεχόμενο. Το min-w-0 αποτρέπει το σπάσιμο του Flexbox -->
-    <div id="content-wrapper" class="relative z-10 w-full mx-auto px-12 md:px-24 lg:px-28 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-10 min-w-0">
+    <!-- PADDING ΑΣΦΑΛΕΙΑΣ: px-14 (56px) στο κινητό. Το βέλος φτάνει μέχρι τα 44px. Είναι ΑΔΥΝΑΤΟΝ να επικαλύψουν το ένα το άλλο. -->
+    <div id="content-wrapper" class="relative z-10 w-full mx-auto px-14 md:px-32 lg:px-40 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 lg:gap-16 min-w-0 box-border">
         
-        <!-- Image Section: Σταθερό flexbox child με min-w-0 -->
-        <div class="w-full md:w-2/5 flex justify-center md:justify-end order-1 shrink-0 min-w-0">
+        <!-- Image Section: Αφαιρέθηκε το flex-1 για το κινητό, ώστε να παίρνει μόνο το χώρο της -->
+        <div class="w-full flex justify-center md:justify-end md:flex-1 order-1 shrink-0 min-w-0">
             <div class="relative group">
                 <div class="absolute -inset-4 bg-yellow-500/10 rounded-full blur-2xl"></div>
                 <div class="relative animate-float-slow flex flex-col items-center">
@@ -125,11 +125,11 @@
             </div>
         </div>
 
-        <!-- Text Section: Χρήση max-w-[500px] και break-words για να μην ξεχειλώνει ποτέ -->
-        <div class="w-full md:w-3/5 flex justify-center md:justify-start order-2 min-w-0">
-            <div class="relative animate-float-delayed w-full max-w-[500px]">
-                <!-- ΣΚΛΗΡΟ ΚΛΕΙΔΩΜΑ ΔΙΑΣΤΑΣΕΩΝ: flex flex-col με ΣΤΑΘΕΡΟ h-[320px] md:h-[360px] -->
-                <div class="bg-white/10 backdrop-blur-xl px-5 md:px-8 py-4 md:py-6 rounded-[1.5rem] border border-white/20 shadow-xl w-full h-[320px] md:h-[360px] flex flex-col break-words">
+        <!-- Text Section: ΑΥΣΤΗΡΟ ΚΛΕΙΔΩΜΑ (max-w-full και overflow-hidden) ώστε το κείμενο να "κόβεται" αν προσπαθήσει να ξεχειλώσει το κουτί -->
+        <div class="w-full flex justify-center md:justify-start md:flex-1 order-2 min-w-0 box-border">
+            <div class="relative animate-float-delayed w-full max-w-full md:max-w-[450px] lg:max-w-[500px]">
+                <!-- ΣΚΛΗΡΟ ΚΛΕΙΔΩΜΑ ΔΙΑΣΤΑΣΕΩΝ: h-[330px] md:h-[360px] + overflow-hidden -->
+                <div class="bg-white/10 backdrop-blur-xl px-4 md:px-8 py-4 md:py-6 rounded-[1.5rem] border border-white/20 shadow-xl w-full h-[330px] md:h-[360px] flex flex-col break-words overflow-hidden box-border">
                     
                     <h2 id="poem-category" class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mb-1 empty:hidden shrink-0 min-h-[14px]"></h2>
                     
