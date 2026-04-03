@@ -45,7 +45,7 @@
         }
         @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); } }
         @keyframes float-slow { 0%, 100% { transform: translateY(0px) translateX(0px); } 50% { transform: translateY(-8px) translateX(4px); } }
-        @keyframes float-delayed { 0%, 100% { transform: translateY(0px) translateX(0px) rotate(-1deg); } 50% { transform: translateY(10px) translateX(-2px) rotate(1deg); } }
+        @keyframes float-delayed { 0%, 100% { transform: translateY(0px) translateX(0px) rotate(-1deg); } 50% { transform: translateY(8px) translateX(-2px) rotate(1deg); } }
         
         .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
         .animate-float-delayed { animation: float-delayed 10s ease-in-out infinite; }
@@ -73,8 +73,8 @@
 
         @media (max-width: 768px) {
             .nav-arrow { padding: 0.4rem; opacity: 0.6; top: 50%; } 
-            .arrow-left { left: 0.25rem; }
-            .arrow-right { right: 0.25rem; }
+            .arrow-left { left: 0.15rem; }
+            .arrow-right { right: 0.15rem; }
         }
 
         #yt-player-container { position: absolute; width: 2px; height: 2px; bottom: 0; left: 0; opacity: 0.01; pointer-events: none; overflow: hidden; }
@@ -88,8 +88,8 @@
 
 <div class="flex flex-col justify-center items-center min-h-screen w-full bg-black px-2 md:px-4">
 
-    <!-- Το Widget: pt-12 και pb-12 στο κινητό για απόλυτη συμμετρία πάνω-κάτω -->
-    <div id="space-poetry-widget" class="block mx-auto max-w-4xl flex items-center justify-center pt-12 md:pt-4 pb-12 md:pb-4 shadow-2xl relative h-[500px] md:h-[480px]">
+    <!-- Το Widget: pt-14 και pb-14 στο κινητό για απόλυτη συμμετρία (14 - 4 = 10 μονάδες κενού πάνω-κάτω) -->
+    <div id="space-poetry-widget" class="block mx-auto max-w-4xl flex items-center justify-center pt-14 md:pt-4 pb-14 md:pb-4 shadow-2xl relative h-[520px] md:h-[480px]">
         
         <div id="yt-player-container"><div id="yt-player"></div></div>
 
@@ -108,8 +108,8 @@
 
         <div class="stars-container" id="stars"></div>
 
-        <!-- Περιεχόμενο: Διατήρηση gap-2 και px-12/24 για να μην ακουμπάει τα βέλη -->
-        <div id="content-wrapper" class="relative z-10 w-full mx-auto px-12 md:px-24 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-8">
+        <!-- Περιεχόμενο: Διατήρηση gap-2 και px-14 md:px-24 για να είναι τα βέλη ΣΙΓΟΥΡΑ έξω -->
+        <div id="content-wrapper" class="relative z-10 w-full mx-auto px-14 md:px-24 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-8">
             
             <!-- Image Section -->
             <div class="w-full md:w-2/5 flex justify-center md:justify-end order-1">
@@ -122,14 +122,16 @@
                 </div>
             </div>
 
-            <!-- Text Section - Σταθερά ύψη για τίτλο και κείμενο -->
+            <!-- Text Section - Σκληρό κλείδωμα ύψους -->
             <div class="w-full md:w-3/5 flex justify-center md:justify-start order-2">
                 <div class="relative animate-float-delayed w-full">
                     <div class="bg-white/10 backdrop-blur-xl px-4 md:px-8 pt-3 md:pt-5 pb-5 md:pb-8 rounded-[1.5rem] border border-white/20 shadow-xl w-full max-w-[550px] mx-auto md:mx-0">
                         <h2 id="poem-category" class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] font-bold mb-1 empty:hidden opacity-50"></h2>
-                        <!-- Σταθερό ύψος τίτλου h-[40px] -->
-                        <h1 id="poem-title" class="text-sm md:text-lg lg:text-xl font-serif text-yellow-400 leading-tight mb-2 h-[40px] md:h-auto overflow-hidden flex items-center"></h1>
-                        <div class="w-full h-[1px] bg-white/20 mb-2 md:mb-4"></div>
+                        <!-- Σταθερό ύψος τίτλου -->
+                        <div class="min-h-[50px] flex items-center">
+                            <h1 id="poem-title" class="text-sm md:text-lg lg:text-xl font-serif text-yellow-400 leading-tight m-0 overflow-hidden"></h1>
+                        </div>
+                        <div class="w-full h-[1px] bg-white/20 my-2 md:my-4"></div>
                         
                         <!-- Σταθερό ύψος κειμένου -->
                         <div id="poem-scroll-container" class="h-[140px] md:h-[220px] overflow-y-auto pr-1 md:pr-3 custom-scrollbar" style="-webkit-overflow-scrolling: touch;">
@@ -145,7 +147,7 @@
             </div>
         </div>
 
-        <!-- Navigation Dots - Σταθερό bottom-4 για συμμετρία με το top-4 της μουσικής -->
+        <!-- Navigation Dots - Σταθερό bottom-4 -->
         <div id="nav-dots" class="absolute bottom-4 left-0 w-full flex justify-center items-center gap-1.5 md:gap-2 px-4 flex-wrap z-20"></div>
     </div>
 
@@ -195,7 +197,7 @@
       {title: "Φιλία", category: "Ποίημα", text: "Πριν σε συναντήσω όλα ήταν σιωπηλά,\nοι λέξεις άδειες τα όνειρα μακριά.\nΗ καρδιά μου έρημος η ζωή βαριά,\nκι ο κόσμος δίχως φως, τα πάντα σκοτεινά.\n\nΑφού σε συνάντησα όλα γίναν μαγικά,\nοι λέξεις γίναν πράξεις, η ψυχή μίλησε πια,\nκαι όλα απέκτησαν νόημα, η καρδιά,\nσαν τριαντάφυλλο που ανθίζει στην ερημιά.\n\nΤώρα σε κοιτώ και γελώ ξανά, είσαι το θαύμα,\nπου φωτίζει τη ζωή μου πια. Κι όσο σε αγαπώ\nκαι σε φροντίζω καταλαβαίνω, πως ό,τι αγαπάμε\nμένει για πάντα κοντά.", author: "Χ.Π.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=19BKhmO-nn3HkaA6cfOT8uGPYI-0sf90x&sz=w800", duration: 22000},
       {title: "Ο αέρας μιας φιλίας", category: "Ποίημα", text: "Ξαφνικά μια μέρα \nήρθες εσύ σαν το αέρα\nΤα προβλήματα μου πήρες \nκαι τα πήγες πέρα πέρα\nΉρθες και έφερες \nστη ζωή μου \nευτυχία και γαλήνη\nΗ φιλία σου όμορφη \nσαν τη σελήνη.\n\nΣαν τριαντάφυλλο \nείναι η φιλία μας \nπου συνεχώς ανθίζει\nμε αγάπη και φροντίδα \nη ζωή μας γεμίζει.\nΒόλτες, χαρά και γέλια\nΦωτίζεις τη ζωή μου \nσαν του ουρανού \nτα αστέρια.", author: "Η.Κ. & Α.Γ.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1DcNy9ltmBBqIouaGfZ3OCmrgyZVrVQYQ&sz=w800", duration: 20000},
       {title: "Ένα ποίημα για τη φιλία", category: "Ποίημα", text: "Φιλία είναι να ξέρεις\nπως κάποιος σε καταλαβαίνει,\nχωρίς εξηγήσεις,\nσε διορθώνει\nχωρίς να σε μειώνει\nκαι στέκεται σταθερός\nόταν ο κόσμος αλλάζει ρυθμό,\nδιάθεση, κατεύθυνση,\nαφήνοντας χώρο να μεγαλώνεις\nόπως είσαι, αληθινά,\nχωρίς φόβο απώλειας\nή περιττούς ρόλους.\n\nΟι φίλοι δεν υπόσχονται αιωνιότητες,\nμοιράζονται βάρος, χρόνο, σιωπή.\nΕίναι το μήνυπα αργά τη νύχτα,\nτο βλέμμα που λέει «ξέρω»,\nκαι η παρουσία που κάνει\nτο δύσκολο υποφερτό,\nτο καλό πιο καθαρό\nκαι τη ζωή λίγο πιο δική σου.", author: "Μ.Λ.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1HUY7lnZyO54MAgwyFTBCscZkG18rRXMa&sz=w800", duration: 25000},
-      {title: "Ο κήπος με τα τριαντάφυλλα", category: "Ποίημα", text: "Ένα αγόρι, ένας πρίγκιπας μικρός\nσυνάντησε ένα όμορφο λουλούδι.\nΠοτέ του δεν είχε δει σαν αυτό,\nΌμως, ένας κήπος με τριαντάφυλλα\nβρέθηκε μπροστά του.\nΌλα ίδια με το δικό του.\nΣτεναχώρια τον έπιασε μεγάλη.\nΑλλά απ' το πουθενά, εμφανίστηκε μια αλεπού.\nΗ οποία του είπε όλα τα μυστικά για τη φιλία.\nΤου εξήγησε για το ημέρωμα.\nΚαι τελικά, ο πρίγκιπας έμαθε πολλά.\nΈμαθε πως η φιλία είναι η πιο σημαντική.\nΠως όταν ημερώνεις κάποιον, αυτοί γίνονται μοναδικοί.\nΠως όλοι χρειαζόμαστε έναν φίλο να μας στηρίζει και να μας αγαπά.\nΤώρα, ο μικρός πρίγκιπας ξέρει.\nΑυτό το τριαντάφυλλο που ημέρωσε, είναι το δικό του.", author: "Μ.Κ. & Ε.Π.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=16dJPQCngi8PpmSy97RJxhDiPaWCdrp_Q&sz=w800", duration: 25000},
+      {title: "Ο κήπος με τα τριαντάφυλλα", category: "Ποίημα", text: "Ένα αγόρι, ένας πρίγκιπας μικρός\nσυνάντησε ένα όμορφο λουλούδι.\nΠοτέ του δεν είχε δει σαν αυτό,\nΌμως, ένας κήπος με τριαντάφυλλα\nβρέθηκε μπصور του.\nΌλα ίδια με το δικό του.\nΣτεναχώρια τον έπιασε μεγάλη.\nΑλλά απ' το πουθενά, εμφανίστηκε μια αλεπού.\nΗ οποία του είπε όλα τα μυστικά για τη φιλία.\nΤου εξήγησε για το ημέρωμα.\nΚαι τελικά, ο πρίγκιπας έμαθε πολλά.\nΈμαθε πως η φιλία είναι η πιο σημαντική.\nΠως όταν ημερώνεις κάποιον, αυτοί γίνονται μοναδικοί.\nΠως όλοι χρειαζόμαστε έναν φίλο να μας στηρίζει και να μας αγαπά.\nΤώρα, ο μικρός πρίγκιπας ξέρει.\nΑυτό το τριαντάφυλλο που ημέρωσε, είναι το δικό του.", author: "Μ.Κ. & Ε.Π.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=16dJPQCngi8PpmSy97RJxhDiPaWCdrp_Q&sz=w800", duration: 25000},
       {title: "Το στήριγμά μας", category: "Ποίημα", text: "Με το χέρι στην καρδιά\nσκέφτομαι βαθιά\nτον αγαπημένο μου το φίλο\nτο στήριγμά μου στη ζωή.\n\nΗ φιλία δένει πάντα\nτων ανθρώπων τις ζωές\nη αλήθεια στη φιλία\nείναι η πυξίδα\nγια να δείχνει τις χαρές.", author: "Γ.Π. & Γ.Λ.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1jHFp6qlnYLb3f1ZoF6DcHvGpwFAZUZPb&sz=w800", duration: 18000},
       {title: "Το σπάνιο λουλούδι", category: "Ποίημα", text: "Σαν το πιο σπάνιο λουλούδι στον κήπο της ζωής,\nη φιλία ανθίζει, δίχως να ζητά τιμή.\nΔεν είναι λόγια, αλλά πράξεις και σιωπή,\nένα χέρι σταθερό, όταν η νύχτα είναι σκοτεινή.\n\nΣτις χαρές γελάμε δυνατά,\nμα στις λύπες είναι ο φίλος εκεί \nσαν σωστός συνοδοιπόρος.\nΈνα βλέμμα φτάνει, για να πούμε \nόσα δεν ειπώθηκαν, \nμία αγκαλιά που γιατρεύει \nόσα μας πόνεσαν.\n\nΔεν μετράει ούτε ο χρόνος \nούτε η απόσταση\nη αληθινή φιλία αντέχει στον καιρό \nκαι στην φωτιά.\nΕίναι ένας καθρέπτης που δείχνει \nποιοι πραγματικά είμαστε.", author: "Ε.Μ.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1PCpyUw_vF5FfjvfIIaO5E5Zfg9VPf7ni&sz=w800", duration: 22000},
       {title: "Η αθάνατη φιλία", category: "Ποίημα", text: "Φιλία λέξη ιερή\nφιλία λέξη θεία που γράφεται\nμες τις καρδιές και\nόχι στα βιβλία.\n\nΦιλία λέξη αθάνατη\nφιλία λέξη θεία\nπου γράφεται μες στις ζωές\nκαι όχι στα αρχεία.", author: "Χ.Μ.", label: "ΜΑΘΗΤΗΣ / ΜΑΘΗΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=147fbtfNF3dAGvWCsFt-07wqLjvhcW534&sz=w800", duration: 15000},
