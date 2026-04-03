@@ -58,7 +58,7 @@
         .nav-dot { transition: all 0.3s ease; cursor: pointer; }
         .nav-dot:hover { background-color: rgba(255, 255, 255, 0.8) !important; }
 
-        /* ΣΤΑΘΕΡΑ ΒΕΛΗ: Απόλυτα καρφωμένα στις άκρες */
+        /* ΣΤΑΘΕΡΑ ΒΕΛΗ: Απόλυτα καρφωμένα στις άκρες του Widget */
         .nav-arrow {
             position: absolute; top: 50%; transform: translateY(-50%); z-index: 50;
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px);
@@ -68,10 +68,11 @@
         }
         .nav-arrow:hover { background: rgba(255, 255, 255, 0.2); border-color: #facc15; color: #facc15; }
         
-        .arrow-left { left: 1.5rem; } .arrow-right { right: 1.5rem; }
-        
+        @media (min-width: 768px) {
+            .arrow-left { left: 1.5rem; } .arrow-right { right: 1.5rem; }
+        }
         @media (max-width: 768px) {
-            .nav-arrow { padding: 0.5rem; opacity: 0.7; top: 50%; }
+            .nav-arrow { padding: 0.5rem; opacity: 0.8; top: 50%; }
             .arrow-left { left: 0.5rem; } .arrow-right { right: 0.5rem; }
         }
 
@@ -88,8 +89,8 @@
 </head>
 <body>
 
-<!-- W-FULL & MAX-W-5XL: Εξασφαλίζει ότι το εξωτερικό πλαίσιο δεν μεταβάλλεται ΠΟΤΕ -->
-<div id="space-poetry-widget" class="w-full max-w-5xl mx-auto flex items-center justify-center pt-20 md:pt-4 pb-12 md:pb-4 shadow-2xl relative h-[650px] md:h-[520px]">
+<!-- W-95VW & MAX-W-5XL: ΑΥΣΤΗΡΟ κλείδωμα πλάτους, δεν επηρεάζεται ΠΟΤΕ από το περιεχόμενο -->
+<div id="space-poetry-widget" class="w-[95vw] md:w-[90vw] max-w-5xl mx-auto flex items-center justify-center pt-20 md:pt-4 pb-12 md:pb-4 shadow-2xl relative h-[650px] md:h-[520px]">
     
     <div id="yt-player-container"><div id="yt-player"></div></div>
 
@@ -108,11 +109,11 @@
 
     <div class="stars-container" id="stars"></div>
 
-    <!-- ΜΕΓΑΛΟ PADDING (px-16 md:px-28): Προστατεύει το κείμενο από το να ακουμπήσει τα βέλη -->
-    <div id="content-wrapper" class="relative z-10 w-full mx-auto px-16 md:px-28 lg:px-32 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-10">
+    <!-- ΤΕΡΑΣΤΙΟ PADDING (px-12 md:px-24) για να μην ακουμπάει ποτέ τα βέλη το περιεχόμενο. Το min-w-0 αποτρέπει το σπάσιμο του Flexbox -->
+    <div id="content-wrapper" class="relative z-10 w-full mx-auto px-12 md:px-24 lg:px-28 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-10 min-w-0">
         
-        <!-- Image Section: Σταθερό w-2/5 -->
-        <div class="w-full md:w-2/5 flex justify-center md:justify-end order-1 shrink-0">
+        <!-- Image Section: Σταθερό flexbox child με min-w-0 -->
+        <div class="w-full md:w-2/5 flex justify-center md:justify-end order-1 shrink-0 min-w-0">
             <div class="relative group">
                 <div class="absolute -inset-4 bg-yellow-500/10 rounded-full blur-2xl"></div>
                 <div class="relative animate-float-slow flex flex-col items-center">
@@ -124,11 +125,11 @@
             </div>
         </div>
 
-        <!-- Text Section: Σταθερό w-3/5 -->
-        <div class="w-full md:w-3/5 flex justify-center md:justify-start order-2">
-            <div class="relative animate-float-delayed w-full">
+        <!-- Text Section: Χρήση max-w-[500px] και break-words για να μην ξεχειλώνει ποτέ -->
+        <div class="w-full md:w-3/5 flex justify-center md:justify-start order-2 min-w-0">
+            <div class="relative animate-float-delayed w-full max-w-[500px]">
                 <!-- ΣΚΛΗΡΟ ΚΛΕΙΔΩΜΑ ΔΙΑΣΤΑΣΕΩΝ: flex flex-col με ΣΤΑΘΕΡΟ h-[320px] md:h-[360px] -->
-                <div class="bg-white/10 backdrop-blur-xl px-5 md:px-8 py-4 md:py-6 rounded-[1.5rem] border border-white/20 shadow-xl w-full h-[320px] md:h-[360px] flex flex-col">
+                <div class="bg-white/10 backdrop-blur-xl px-5 md:px-8 py-4 md:py-6 rounded-[1.5rem] border border-white/20 shadow-xl w-full h-[320px] md:h-[360px] flex flex-col break-words">
                     
                     <h2 id="poem-category" class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mb-1 empty:hidden shrink-0 min-h-[14px]"></h2>
                     
@@ -259,6 +260,15 @@
             document.getElementById('poem-author').innerText = poem.author ? "— " + poem.author : "";
             document.getElementById('author-label').innerText = poem.label;
             
+            const scrollContainer = document.getElementById('poem-scroll-container');
+            if (currentIndex === POEMS.length - 1) {
+                scrollContainer.classList.remove('max-h-[170px]');
+                scrollContainer.classList.add('max-h-[280px]'); 
+            } else {
+                scrollContainer.classList.add('max-h-[170px]');
+                scrollContainer.classList.remove('max-h-[280px]');
+            }
+            
             const imgElement = document.getElementById('poem-img');
             const placeholder = document.getElementById('img-placeholder');
             
@@ -286,7 +296,7 @@
             wrapper.classList.remove('fade-out');
             setTimeout(() => { 
                 isAnimating = false; 
-                startAutoPlay(); 
+                startAutoPlay(); // Επανεκκίνηση του timer μετά την αλλαγή
             }, 500);
         }, 500);
     }
