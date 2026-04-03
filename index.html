@@ -113,10 +113,10 @@
     <div class="stars-container" id="stars"></div>
 
     <!-- MAIN CONTENT - ΜΑΘΗΜΑΤΙΚΟ ΚΛΕΙΔΩΜΑ (Shrink-0 και Exact Widths) -->
-    <div id="content-wrapper" class="relative z-10 w-full flex flex-col md:flex-row items-center justify-center gap-5 md:gap-16 min-w-0">
+    <div id="content-wrapper" class="relative z-10 w-full flex flex-col md:flex-row items-center justify-center gap-5 md:gap-16 min-w-0 mt-4 md:mt-0">
         
-        <!-- Image Section: Απολύτως φιξαρισμένο μέγεθος (Έγινε w-40 h-40 στο κινητό) -->
-        <div class="shrink-0 w-40 h-40 md:w-64 md:h-64 relative order-1 flex justify-center items-center">
+        <!-- Image Section: Απολύτως φιξαρισμένο μέγεθος (Έγινε w-48 h-48 στο κινητό για να φαίνεται αρκετά μεγαλύτερη) -->
+        <div class="shrink-0 w-48 h-48 md:w-64 md:h-64 relative order-1 flex justify-center items-center">
             <div class="relative group animate-float-slow w-full h-full">
                 <div class="absolute -inset-4 bg-yellow-500/10 rounded-full blur-2xl"></div>
                 <div class="w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border-2 border-white/20 shadow-xl bg-gray-900 flex items-center justify-center relative">
@@ -126,9 +126,9 @@
             </div>
         </div>
 
-        <!-- Text Section: ΜΑΘΗΜΑΤΙΚΟ ΚΛΕΙΔΩΜΑ για να μην 'απλώνει' ΠΟΤΕ! 
-             Στο κινητό είναι ακριβώς 100% της οθόνης ΜΕΙΟΝ 96pixels (χώρος για τα βέλη). -->
-        <div class="shrink-0 w-[calc(100%-6rem)] md:w-[480px] lg:w-[500px] h-[300px] md:h-[380px] order-2 min-w-0">
+        <!-- Text Section: ΜΑΘΗΜΑΤΙΚΟ ΚΛΕΙΔΩΜΑ. 
+             Στο κινητό ελαττώσαμε το ύψος σε h-[280px] για να ισορροπήσει απόλυτα την μεγαλύτερη εικόνα. -->
+        <div class="shrink-0 w-[calc(100%-6rem)] md:w-[480px] lg:w-[500px] h-[280px] md:h-[380px] order-2 min-w-0">
             <div class="relative animate-float-delayed w-full h-full">
                 <div class="bg-white/10 backdrop-blur-xl px-4 md:px-8 py-4 md:py-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/20 shadow-xl w-full h-full flex flex-col break-words overflow-hidden box-border">
                     
