@@ -43,7 +43,7 @@
         @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); } }
         
         /* Ισορροπημένη αιώρηση αριστερά-δεξιά για να μην "φεύγει" από το κέντρο */
-        @keyframes float-slow { 0%, 100% { transform: translateY(0px) translateX(-3px); } 50% { transform: translateY(-8px) translateX(3px); } }
+        @keyframes float-slow { 0%, 100% { transform: translateY(0px) translateX(-2px); } 50% { transform: translateY(-8px) translateX(2px); } }
         @keyframes float-delayed { 0%, 100% { transform: translateY(0px) translateX(2px) rotate(-1deg); } 50% { transform: translateY(8px) translateX(-2px) rotate(1deg); } }
         
         .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
@@ -74,7 +74,7 @@
             .nav-arrow { padding: 0.75rem; top: 50% !important; }
             .arrow-left { left: 1.5rem; } .arrow-right { right: 1.5rem; }
         }
-        /* Στο κινητό ανεβαίνουν βίαια στο ύψος της εικόνας (26%) */
+        /* Στο κινητό ανεβαίνουν στο ύψος της εικόνας (26%) */
         @media (max-width: 768px) {
             .nav-arrow { padding: 0.5rem; opacity: 0.8; top: 26% !important; }
             .arrow-left { left: 0.5rem; } .arrow-right { right: 0.5rem; }
@@ -122,4 +122,185 @@
             </div>
         </div>
 
-        <div class="shrink-0 w-[calc(100%-6rem)] md:w-[480px] lg:w-[500px] h-[280px] md:
+        <div class="shrink-0 w-[calc(100%-6rem)] md:w-[480px] lg:w-[500px] h-[280px] md:h-[380px] order-2 min-w-0">
+            <div class="relative animate-float-delayed w-full h-full">
+                <div class="bg-white/10 backdrop-blur-xl px-4 md:px-8 py-4 md:py-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/20 shadow-xl w-full h-full flex flex-col break-words overflow-hidden box-border">
+                    
+                    <h2 id="poem-category" class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mb-1 empty:hidden shrink-0 min-h-[14px]"></h2>
+                    
+                    <div class="min-h-[40px] md:min-h-[50px] flex items-center shrink-0">
+                        <h1 id="poem-title" class="text-base md:text-xl lg:text-2xl font-serif font-normal leading-tight m-0 line-clamp-2"></h1>
+                    </div>
+                    
+                    <div class="w-full h-[1px] bg-white/20 my-2 md:my-3 shrink-0"></div>
+                    
+                    <div id="poem-scroll-container" class="flex-1 overflow-y-auto pr-1 md:pr-3 custom-scrollbar" style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;">
+                        <p id="poem-text" class="text-[11px] md:text-[14px] lg:text-[15px] text-blue-50 font-light italic leading-relaxed whitespace-pre-line m-0 pb-1"></p>
+                    </div>
+
+                    <div class="mt-3 md:mt-4 text-right shrink-0 min-h-[36px] md:min-h-[40px] flex flex-col justify-end">
+                        <p id="poem-author" class="text-yellow-500 font-serif text-sm md:text-lg m-0"></p>
+                        <p id="author-label" class="text-white/40 text-[8px] mt-1 tracking-widest m-0 uppercase"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="nav-dots" class="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex justify-center items-center gap-1.5 md:gap-2 w-max max-w-[90vw] flex-wrap z-20"></div>
+</div>
+
+<script>
+    let player;
+    let isMusicPlaying = false;
+    let currentIndex = 0;
+    let autoPlayTimer;
+    let isAnimating = false;
+
+    window.onYouTubeIframeAPIReady = function() {
+        player = new YT.Player('yt-player', {
+            height: '2', width: '2', videoId: 'fqkI-3bOreg',
+            playerVars: { 
+                'autoplay': 0, 
+                'controls': 0, 
+                'loop': 1, 
+                'playlist': 'fqkI-3bOreg', 
+                'playsinline': 1
+            },
+            events: {
+                'onReady': (e) => { e.target.setVolume(30); },
+                'onStateChange': (e) => {
+                    isMusicPlaying = (e.data === YT.PlayerState.PLAYING);
+                    document.getElementById('play-icon').classList.toggle('hidden', isMusicPlaying);
+                    document.getElementById('pause-icon').classList.toggle('hidden', !isMusicPlaying);
+                }
+            }
+        });
+    };
+
+    document.getElementById('music-btn').addEventListener('click', function() {
+        if (!player || typeof player.playVideo !== 'function') return;
+        if (isMusicPlaying) { player.pauseVideo(); } else { player.playVideo(); }
+    });
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    const POEMS = [
+      {title: "<span class='block text-left w-full'>Η φιλία στο δικό μας σύμπαν:<br>Ψηφιακή συλλογή ποιημάτων</span>", category: "", text: "2ο Γυμνάσιο Τρικάλων\nΣχολικό έτος 2025-26\nΤμήματα Β1 & Β2\n\nΜια συνεργατική δημιουργία των μαθητών μας για την αξία της φιλίας.", author: "", label: "", image: "https://drive.google.com/thumbnail?id=1bGjMZQklRTZWHGIgy1tHRlXFF-DX2p3V&sz=w800", duration: 12000},
+      {title: "Φιλία", category: "", text: "Σε κάθε βόλτα η καρδιά ξανοίγει,\nμε γέλια που διώχνουν κάθε σύννεφο βαρύ,\nεκεί που η εμπιστοσύνη ρίζες έχει πήξει,\nκι η φιλία ανθίζει σπάνια και γερή.\n\nΜε σεβασμό στα «θέλω» και στα «πρέπει»,\nαναμνήσεις χτίζουμε σε κάθε μας στιγμή,\nο φίλος με τα μάτια της ψυχής σε βλέπει,\nπάντα ειλικρινή και στο πλευρό σου μια ζωή.", author: "Α.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1Zkwz6rdWu278wIOaHMBjxXMiYUtVFN0I&sz=w800", duration: 20000},
+      {title: "Ένα ποίημα για την φιλία", category: "", text: "Φιλία, είναι το γέλιο που διώχνει\nμακριά την βροχή, το χέρι που\nσε πιάνει πριν κάθε ελπίδα χαθεί.\nΣτα εύκολα και στα δύσκολα,\nστέκει εκεί πιστή, σαν φάρος\nπου φωτίζει όλη μας τη ζωή.\nΣαν ήλιος που περιμένει μετά\nαπό κάθε βροχή.", author: "Ε.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1AtsSgeJGQNch2TdyHlOlydVNhkGFHuu7&sz=w800", duration: 18000},
+      {title: "Σιωπηλές στιγμές", category: "", text: "Η φιλία είναι φως σε σιωπηλές στιγμές,\nένα χέρι που μένει όταν όλα φεύγουν.\nΓέλιο που μοιράζεται, \nπόνος που μικραίνει\nκαι μια καρδιά που λέει «είμαι εδώ»\nχωρίς να ρωτά.", author: "Δ.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1KM5Pp0PihcH3EHsvnpFNZyBFoxFk3eTb&sz=w800", duration: 16000},
+      {title: "Το χτύπημα της καρδιάς", category: "", text: "Ενώ στην ζωή μου υπάρχει μονοτονία \nξαφνικά χτυπάς εσύ την πόρτα της καρδιάς μου \nκαι μου δημιουργείς απορία.\n\nΠοιος είσαι εσύ; Ποιος είσαι συ που θες να με γνωρίσεις; \nΛύσε μου την απορία με δυο-τρεις απαντήσεις. \nΠιο κοντά και πιο κοντά να έρχεσαι κάθε μέρα \nγιατί άμα έρθεις απότομα θα μου δημιουργήσεις φόβο.\n\nΟ καιρός περνά μπροστά από τα μάτια μας \nνα κοιτάς και πάλι, μαζί μεγαλώσαμε και τσακωμούς περάσαμε.\nΟ καιρός περνά ταχύτατα μην τον χάσεις \nέναν φίλο στο πλευρό σου πάντα να έχεις!", author: "Ε.Γ. & Ν.Κ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1GDzaVHnX6f5c3tCVXeynpih0n8Ly0E_l&sz=w800", duration: 25000},
+      {title: "Φίλος για πάντα", category: "", text: "Ένας φίλος είναι ο θησαυρός,\nπου λάμπει μες στο σκοτάδι.\nΕίναι το στήριγμα το γερό,\nσε κάθε μας σημάδι.\n\nΜε την αγάπη οδηγό,\nχτίζουμε κόσμους νέους,\nκρατώντας πάντα ζωντανό,\nτον δεσμό μας τον ωραίο.", author: "Σ.Κ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1RX5lKvMd7Sdi1OcejvlksXPdkCzRcj98&sz=w800", duration: 18000},
+      {title: "Η φιλία στη ζωή μας", category: "", text: "Η χαρά στις εύκολες στιγμές\nη συμπόνια στις βασανιστικές στιγμές\nη καθοδήγηση στις μπερδεμένες αποφάσεις,\nτο πιο σπουδαίο πράγμα στο κόσμο\nαυτό είναι η φιλία.\n\nΗ ζεστασιά μιας αγκαλιάς\nΗ προσφορά μιας ουσιαστικής κουβέντας\nΤο πιο εύλογο πράγμα στη ζωή\nαυτό είναι η φιλία.", author: "Μ.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1vKwlMQFjEZeNZ216UYOq3UagmDTUe3Ry&sz=w800", duration: 18000},
+      {title: "Φιλία", category: "", text: "Πριν σε συναντήσω όλα ήταν σιωπηλά,\nοι λέξεις άδειες τα όνειρα μακριά.\nΗ καρδιά μου έρημος η ζωή βαριά,\nκι ο κόσμος δίχως φως, τα πάντα σκοτεινά.\n\nΑφού σε συνάντησα όλα γίναν μαγικά,\nοι λέξεις γίναν πράξεις, η ψυχή μίλησε πια,\nκαι όλα απέκτησαν νόημα, η καρδιά,\nσαν τριαντάφυλλο που ανθίζει στην ερημιά.\n\nΤώρα σε κοιτώ και γελώ ξανά, είσαι το θαύμα,\nπου φωτίζει τη ζωή μου πια. Κι όσο σε αγαπώ\nκαι σε φροντίζω καταλαβαίνω, πως ό,τι αγαπάμε\nμένει για πάντα κοντά.", author: "Χ.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=19BKhmO-nn3HkaA6cfOT8uGPYI-0sf90x&sz=w800", duration: 22000},
+      {title: "Ο αέρας μιας φιλίας", category: "", text: "Ξαφνικά μια μέρα \nήρθες εσύ σαν το αέρα\nΤα προβλήματα μου πήρες \nκαι τα πήγες πέρα πέρα\nΉρθες και έφερες \nστη ζωή μου \nευτυχία και γαλήνη\nΗ φιλία σου όμορφη \nσαν τη σελήνη.\n\nΣαν τριαντάφυλλο \nείναι η φιλία μας \nπου συνεχώς ανθίζει\nμε αγάπη και φροντίδα \nη ζωή μας γεμίζει.\nΒόλτες, χαρά και γέλια\nΦωτίζεις τη ζωή μου \nσαν του ουρανού \nτα αστέρια.", author: "Η.Κ. & Α.Γ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1DcNy9ltmBBqIouaGfZ3OCmrgyZVrVQYQ&sz=w800", duration: 20000},
+      {title: "Ένα ποίημα για τη φιλία", category: "", text: "Φιλία είναι να ξέρεις\nπως κάποιος σε καταλαβαίνει,\nχωρίς εξηγήσεις,\nσε διορθώνει\nχωρίς να σε μειώνει\nκαι στέκεται σταθερός\nόταν ο κόσμος αλλάζει ρυθμό,\nδιάθεση, κατεύθυνση,\nαφήνοντας χώρο να μεγαλώνεις\nόπως είσαι, αληθινά,\nχωρίς φόβο απώλειας\nή περιττούς ρόλους.\n\nΟι φίλοι δεν υπόσχονται αιωνιότητες,\nμοιράζονται βάρος, χρόνο, σιωπή.\nΕίναι το μήνυμα αργά τη νύχτα,\nτο βλέμμα που λέει «ξέρω»,\nκαι η παρουσία που κάνει\nτο δύσκολο υποφερτό,\nτο καλό πιο καθαρό\nκαι τη ζωή λίγο πιο δική σου.", author: "Μ.Λ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1HUY7lnZyO54MAgwyFTBCscZkG18rRXMa&sz=w800", duration: 25000},
+      {title: "Ο κήπος με τα τριαντάφυλλα", category: "", text: "Ένα αγόρι, ένας πρίγκιπας μικρός\nσυνάντησε ένα όμορφο λουλούδι.\nΠοτέ του δεν είχε δει σαν αυτό,\nΌμως, ένας κήπος με τριαντάφυλλα\nβρέθηκε μπροστά του.\nΌλα ίδια με το δικό του.\nΣτεναχώρια τον έπιασε μεγάλη.\nΑλλά απ' το πουθενά, εμφανίστηκε μια αλεπού.\nΗ οποία του είπε όλα τα μυστικά για τη φιλία.\nΤου εξήγησε για το ημέρωμα.\nΚαι τελικά, ο πρίγκιπας έμαθε πολλά.\nΈμαθε πως η φιλία είναι η πιο σημαντική.\nΠως όταν ημερώνεις κάποιον, αυτοί γίνονται μοναδικοί.\nΠως όλοι χρειαζόμαστε έναν φίλο να μας στηρίζει και να μας αγαπά.\nΤώρα, ο μικρός πρίγκιπας ξέρει.\nΑυτό το τριαντάφυλλο που ημέρωσε, είναι το δικό του.", author: "Μ.Κ. & Ε.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=16dJPQCngi8PpmSy97RJxhDiPaWCdrp_Q&sz=w800", duration: 25000},
+      {title: "Το στήριγμά μας", category: "", text: "Με το χέρι στην καρδιά\nσκέφτομαι βαθιά\nτον αγαπημένο μου το φίλο\nτο στήριγμά μου στη ζωή.\n\nΗ φιλία δένει πάντα\nτων ανθρώπων τις ζωές\nη αλήθεια στη φιλία\nείναι η πυξίδα\nγια να δείχνει τις χαρές.", author: "Γ.Π. & Γ.Λ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1jHFp6qlnYLb3f1ZoF6DcHvGpwFAZUZPb&sz=w800", duration: 18000},
+      {title: "Το σπάνιο λουλούδι", category: "", text: "Σαν το πιο σπάνιο λουλούδι στον κήπο της ζωής,\nη φιλία ανθίζει, δίχως να ζητά τιμή.\nΔεν είναι λόγια, αλλά πράξεις και σιωπή,\nένα χέρι σταθερό, όταν η νύχτα είναι σκοτεινή.\n\nΣτις χαρές γελάμε δυνατά,\nμα στις λύπες είναι ο φίλος εκεί \nσαν σωστός συνοδοιπόρος.\nΈνα βλέμμα φτάνει, για να πούμε \nόσα δεν ειπώθηκαν, \nμία αγκαλιά που γιατρεύει \nόσα μας πόνεσαν.\n\nΔεν μετράει ούτε ο χρόνος \nούτε η απόσταση\nη αληθινή φιλία αντέχει στον καιρό \nκαι στην φωτιά.\nΕίναι ένας καθρέπτης που δείχνει \nποιοι πραγματικά είμαστε.", author: "Ε.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1rGyeA-MLXFLjN_M2lgeABe1v3sqX1soA&sz=w800", duration: 22000},
+      {title: "Η αθάνατη φιλία", category: "", text: "Φιλία λέξη ιερή\nφιλία λέξη θεία που γράφεται\nμες τις καρδιές και\nόχι στα βιβλία.\n\nΦιλία λέξη αθάνατη\nφιλία λέξη θεία\nπου γράφεται μες στις ζωές\nκαι όχι στα αρχεία.", author: "Χ.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=147fbtfNF3dAGvWCsFt-07wqLjvhcW534&sz=w800", duration: 15000},
+      {title: "Ο φίλος", category: "", text: "Όταν τον φίλο σου πονάς\nη κουβέντα σου \nδεν σε αφήνει να κοιμηθείς\nκαι όταν ο φίλος\nσου στο πλάι σου \nσε συμπονάει, νιώθεις \nπως αυτή η στιγμή \nσε ταξιδεύει. \n\nΗ φιλία τόσο σημαντική \nόπου την ψάξεις\nόπου την σκάψεις \nσαν αυτήν δεν θα υπάρξει.", author: "Δ.Κ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1IBrjSwRT7PYXDKtPjpEQ-meyp9VrKlXc&sz=w800", duration: 18000},
+      {title: "Ο μικρός πρίγκιπας", category: "", text: "Ο Μικρός Πρίγκιπας είχε ένα λουλούδι,\nένα τριαντάφυλλο μοναδικό στον κόσμο\nκαι τα βουνά του ήταν πέντε χιλιάδες,\nόλα τα ίδια σ' έναν μονάχα κήπο.\nΝόμιζε πως ήταν πλούσιος,\nότι ήταν το μοναδικό στον κόσμο\nκαι πέφτοντας χάμω στο γρασίδι, παραδέχτηκε μια αλήθεια.\nΤου έδωσε ένα πολύ σημαντικό μάθημα,\nπώς είναι να έχεις την ανάγκη του άλλου,\nπώς είναι να δημιουργείς δεσμό με άλλους.\nΤότε άρχισε να καταλαβαίνει, το λουλούδι ήταν το μοναδικό,\nη ζωή θα είναι μονότονη χωρίς αυτό.\nΕίδε ότι τα άλλα λουλούδια ήταν ίδια,\nδεν θα πέθαινε κανείς ποτέ γι' αυτά.\nΑυτό που έχει σημασία σε μία φιλία\nείναι να δεις την καρδιά του άλλου,\nη εξωτερική εμφάνιση δεν έχει καμία απολύτως σημασία.", author: "Μ.Λ. & Α.Κ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1sKQBulWvgsdRnYgUkmTE_TUellEcLXoe&sz=w800", duration: 30000},
+      {title: "Ένας πιστός φίλος", category: "", text: "Η φιλία είναι δώρο ακριβό\nστον άνθρωπο σημαντικό.\nΤο να έχεις έναν φίλο πιστό\nείναι κάτι μοναδικό.\n\nΜαζί θα μοιράζεστε στιγμές,\nχαρές και όνειρα γλυκά,\nθα τα φυλάτε σαν θησαυρό,\nβαθιά μες στην καρδιά.\n\nΣτις δυσκολίες στήριγμα,\nστα γέλια συντροφιά,\nδιώχνει μακριά τα σύννεφα\nκαι κάθε μοναξιά.\n\nΗ φιλία κάθε μέρα,\nομορφαίνει την ψυχή,\nζωντανεύει την αγάπη\nμε τον φίλο μας μαζί.\n\n«Φιλία δυνατή,\nζωή φωτεινή.\nΜαζί στα εύκολα\nμαζί και στα δύσκολα!»", author: "Χ.Δ. & Ν.Γ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1_GSj7l4SDd6kVnQPXKcxHnqj3BwL-p2Q&sz=w800", duration: 40000},
+      {title: "Η έννοια της φιλίας", category: "", text: "Φιλία λέξη ιερή\nμε έννοια μεγάλη\nπου πρέπει βαθιά\nμες την καρδιά\nνα την φυλάμε όλοι!\n\nΟ φίλος είναι κι αδερφός\nποτέ μη το ξεχάσεις,\nγι' αυτό γερά να τον κρατάς\nποτέ σου μην τον χάσεις!\n\nΝα είσαι φίλος δίκαιος\nκαι πάντα να προσέχεις\nτον φίλο σου να τον τιμάς\nδίπλα σου να τον έχεις.\n\nΜεγάλη τύχη στη ζωή\nείναι η αγνή φιλία,\nαλλά στη σήμερον την εποχή,\nτη βρίσκεις με δυσκολία!", author: "Κ.Κ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1h7n9tYgzcUl7O0hdxiYr-A_AATFNK0j5&sz=w800", duration: 28000},
+      {title: "Η φιλία", category: "", text: "Η φιλία θέλει αυτοθυσία,\nΑφοσίωση, αξιοπιστία.\nΈνας φίλος πρέπει να 'ναι σωστός,\nτίμιος, ξεχωριστός.\n\nΕάν ποτέ τον συναντήσεις,\nπροσπάθησε να τον κρατήσεις.\nΓιατί η αληθινή φιλία\nείναι αυτή που έχει αξία.", author: "Ε.Η.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1Z3ZOEW__p0QsqGmJaBUwDT7LTFh8Of2E&sz=w800", duration: 15000},
+      {title: "Η αγάπη της φιλίας", category: "", text: "Η φιλία είναι στήριγμα\nΗ φιλία είναι αγάπη\nΠου ζεσταίνει την ψυχή\nΚαι γιατρεύει όλα τα λάθη.\n\nΗ φιλία είναι στήριγμα\nΗ φιλία είναι αγάπη\nΔεν ζητά αντάλλαγμα\nΔεν ζητά συνάλλαγμα.", author: "Θ.Ν", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1EMTCGuH8vbZ4PrnQ_UYAJZEQOQBXByj-&sz=w800", duration: 15000},
+      {title: "Δεσμοί φιλίας", category: "", text: "Η δικιά σου η φιλία μου προσφέρει ελευθερία,\nη δικιά μου η φιλία σου προσφέρει πειθαρχία,\nαυτό κάνει η φιλία\nμας ενώνει όλους\nκαι όλοι εμείς μαζί ακουμπάμε\nτους ουρανούς.\n\nΣκεφτόμαστε όλοι μαζί το ίδιο πράγμα\nαλλά και έχουμε τα ίδια πλάνα\nόσο είμαστε όλοι μαζί ενωμένοι\nτίποτα εμπόδιο δεν μένει\nκαι όλοι θα χαρούμε\nόταν το όνειρό μας θα γίνει.", author: "Φ.Ν", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1SXAkGEaMeEB1fjkl-fjyl9J_tZKAkkP-&sz=w800", duration: 25000},
+      {title: "Ευχαριστούμε για την προσοχή σας!", category: "", text: "Ποιήματα: μαθητές & μαθήτριες Β1 & Β2\nΕικόνες ΤΝ: μαθητές & μαθήτριες Β2\nΖωγραφιές: Έρλα Παπάι (Β1) και Μαργαρίτα Λαμπρογιώργου (Β2)\nΥπεύθυνες δράσης: Σοφία Κατσαρού & Ελένη Ποζιού\nΨηφιακός εμπλουτισμός – Οπτικοποίηση περιεχομένου: Ελένη Ποζιού & Ευαγγελία Τριάντου", author: "2ο Γυμνάσιο Τρικάλων", label: "Σχολικό έτος 2025-26", image: "https://drive.google.com/thumbnail?id=1g7JNTrDdKXjQ_jT9Qfvc-PtX78ulTtUD&sz=w800", duration: 20000}
+    ];
+
+    function createDots() {
+        const dotsContainer = document.getElementById('nav-dots');
+        dotsContainer.innerHTML = '';
+        POEMS.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = `nav-dot transition-all duration-300 rounded-full ${index === currentIndex ? 'h-1.5 w-4 md:h-2 md:w-6 bg-yellow-400' : 'h-1.5 w-1.5 md:h-2 md:w-2 bg-white/30'}`;
+            dot.onclick = () => goToPoem(index, true); 
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    function goToPoem(index, force = false) {
+        if (!force && (index === currentIndex || isAnimating)) return;
+        isAnimating = true;
+        currentIndex = index;
+        const wrapper = document.getElementById('content-wrapper');
+        wrapper.classList.add('fade-out');
+        
+        clearTimeout(autoPlayTimer);
+        
+        setTimeout(() => {
+            const poem = POEMS[currentIndex];
+            document.getElementById('poem-category').innerText = poem.category;
+            document.getElementById('poem-title').innerHTML = poem.title;
+            document.getElementById('poem-text').innerText = poem.text;
+            document.getElementById('poem-author').innerText = poem.author ? "— " + poem.author : "";
+            document.getElementById('author-label').innerText = poem.label;
+            
+            const imgElement = document.getElementById('poem-img');
+            const placeholder = document.getElementById('img-placeholder');
+            
+            if (poem.image) {
+                placeholder.style.display = 'block';
+                placeholder.innerText = 'ΦΟΡΤΩΣΗ...';
+                imgElement.style.opacity = '0';
+                
+                imgElement.onload = () => {
+                    imgElement.style.opacity = '1';
+                    placeholder.style.display = 'none';
+                };
+                imgElement.onerror = () => {
+                    placeholder.innerText = 'ΔΕΝ ΒΡΕΘΗΚΕ Η ΕΙΚΟΝΑ';
+                };
+                imgElement.src = poem.image;
+            } else {
+                imgElement.style.opacity = '0';
+                imgElement.src = '';
+                placeholder.style.display = 'block';
+                placeholder.innerText = 'ΑΝΑΜΟΝΗ ΕΙΚΟΝΑΣ';
+            }
+            
+            createDots();
+            wrapper.classList.remove('fade-out');
+            setTimeout(() => { 
+                isAnimating = false; 
+                startAutoPlay(); 
+            }, 500);
+        }, 500);
+    }
+
+    function startAutoPlay() {
+        clearTimeout(autoPlayTimer);
+        autoPlayTimer = setTimeout(() => {
+            goToPoem((currentIndex + 1) % POEMS.length);
+        }, POEMS[currentIndex].duration || 15000);
+    }
+
+    document.getElementById('prev-btn').onclick = () => {
+        goToPoem((currentIndex - 1 + POEMS.length) % POEMS.length, true);
+    };
+    document.getElementById('next-btn').onclick = () => {
+        goToPoem((currentIndex + 1) % POEMS.length, true);
+    };
+
+    const starsContainer = document.getElementById('stars');
+    for(let i=0; i<80; i++) {
+        let star = document.createElement('div');
+        star.className = 'star';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.width = Math.random() * 3 + 'px';
+        star.style.height = star.style.width;
+        star.style.animationDelay = Math.random() * 5 + 's';
+        starsContainer.appendChild(star);
+    }
+
+    createDots();
+    goToPoem(0, true);
+</script>
+</body>
+</html>
