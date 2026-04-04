@@ -220,17 +220,22 @@
             const poem = POEMS[currentIndex];
             document.getElementById('poem-category').innerText = poem.category;
             document.getElementById('poem-title').innerHTML = poem.title;
-            document.getElementById('poem-text').innerText = poem.text;
+            const poemText = document.getElementById('poem-text');
+            poemText.innerText = poem.text;
             document.getElementById('poem-author').innerText = poem.author ? "— " + poem.author : "";
             document.getElementById('author-label').innerText = poem.label;
             
             const scrollContainer = document.getElementById('poem-scroll-container');
+            
+            // Έλεγχος: Αν είμαστε στην τελευταία διαφάνεια, μικραίνει ελαφρώς το κείμενο για να χωρέσει χωρίς scroll
             if (currentIndex === POEMS.length - 1) {
                 scrollContainer.classList.remove('max-h-[170px]');
                 scrollContainer.classList.add('max-h-[280px]'); 
+                poemText.className = "text-[9px] md:text-[13px] lg:text-[14px] text-blue-50 font-light italic leading-snug whitespace-pre-line m-0 pb-1";
             } else {
                 scrollContainer.classList.add('max-h-[170px]');
                 scrollContainer.classList.remove('max-h-[280px]');
+                poemText.className = "text-[11px] md:text-[14px] lg:text-[15px] text-blue-50 font-light italic leading-relaxed whitespace-pre-line m-0 pb-1";
             }
             
             const imgElement = document.getElementById('poem-img');
