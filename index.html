@@ -33,8 +33,6 @@
         h1 { color: #facc15 !important; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: normal; }
         h2 { color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .nav-dot { transition: all 0.3s ease; cursor: pointer; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #facc15; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -65,7 +63,6 @@
             <div class="relative group animate-float-slow w-full h-full">
                 <div class="absolute -inset-4 bg-yellow-500/10 rounded-full blur-2xl"></div>
                 <div class="w-full h-full rounded-2xl md:rounded-[2rem] overflow-hidden border-2 border-white/20 shadow-xl bg-gray-900 flex items-center justify-center relative">
-                    <span id="img-placeholder" class="absolute text-gray-400 text-[10px] tracking-widest uppercase z-0">ΦΟΡΤΩΣΗ...</span>
                     <img id="poem-img" src="" class="w-full h-full object-cover relative z-10 transition-opacity duration-300">
                 </div>
             </div>
@@ -79,10 +76,10 @@
                         <h1 id="poem-title" class="text-base md:text-xl lg:text-2xl font-serif leading-tight m-0 line-clamp-2"></h1>
                     </div>
                     <div class="w-full h-[1px] bg-white/20 my-2 md:my-3 shrink-0"></div>
-                    <div id="poem-scroll-container" class="flex-1 overflow-y-auto pr-1 md:pr-3 custom-scrollbar">
+                    <div id="poem-scroll-container" class="flex-1 pr-1 md:pr-3 overflow-visible">
                         <p id="poem-text" class="text-[11px] md:text-[14px] lg:text-[15px] text-blue-50 font-light italic leading-relaxed whitespace-pre-line m-0 pb-1"></p>
                     </div>
-                    <div id="author-container" class="mt-2 text-right shrink-0">
+                    <div class="mt-auto text-right shrink-0">
                         <p id="poem-author" class="text-yellow-500 font-serif text-sm md:text-lg m-0"></p>
                         <p id="author-label" class="text-white/40 text-[8px] mt-1 tracking-widest uppercase m-0"></p>
                     </div>
@@ -97,7 +94,7 @@
 <script>
     let player, currentIndex = 0, autoPlayTimer, isAnimating = false;
     const POEMS = [
-      {title: "<span class='block text-left w-full'>Η φιλία στο δικό μας σύμπαν:<br>Ψηφιακή συλλογή ποιημάτων</span>", text: "2ο Γυμνάσιο Τρικάλων\nΣχολικό έτος 2025-26\nΤμήματα Β1 & Β2\n\nΜια συνεργατική δημιουργία των μαθητών μας για την αξία της φιλίας.", author: "", label: "", image: "https://drive.google.com/thumbnail?id=1bGjMZQklRTZWHGIgy1tHRlXFF-DX2p3V&sz=w800", duration: 12000},
+      {title: "Η φιλία στο δικό μας σύμπαν:<br>Ψηφιακή συλλογή ποιημάτων", text: "2ο Γυμνάσιο Τρικάλων\nΣχολικό έτος 2025-26\nΤμήματα Β1 & Β2\n\nΜια συνεργατική δημιουργία των μαθητών μας για την αξία της φιλίας.", author: "", label: "", image: "https://drive.google.com/thumbnail?id=1bGjMZQklRTZWHGIgy1tHRlXFF-DX2p3V&sz=w800", duration: 12000},
       {title: "Φιλία", text: "Σε κάθε βόλτα η καρδιά ξανοίγει,\nμε γέλια που διώχνουν κάθε σύννεφο βαρύ,\nεκεί που η εμπιστοσύνη ρίζες έχει πήξει,\nκι η φιλία ανθίζει σπάνια και γερή.\n\nΜε σεβασμό στα «θέλω» και στα «πρέπει»,\nαναμνήσεις χτίζουμε σε κάθε μας στιγμή,\nο φίλος με τα μάτια της ψυχής σε βλέπει,\nπάντα ειλικρινή και στο πλευρό σου μια ζωή.", author: "Α.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1Zkwz6rdWu278wIOaHMBjxXMiYUtVFN0I&sz=w800", duration: 20000},
       {title: "Ένα ποίημα για την φιλία", text: "Φιλία, είναι το γέλιο που διώχνω\nμακριά την βροχή, το χέρι που\nσε πιάνει πριν κάθε ελπίδα χαθεί.\nΣτα εύκολα και στα δύσκολα,\nστέκει εκεί πιστή, σαν φάρος\nπου φωτίζει όλη μας τη ζωή.\nΣαν ήλιος που περιμένει μετά\nαπό κάθε βροχή.", author: "Ε.Π.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1AtsSgeJGQNch2TdyHlOlydVNhkGFHuu7&sz=w800", duration: 18000},
       {title: "Σιωπηλές στιγμές", text: "Η φιλία είναι φως σε σιωπηλές στιγμές,\nένα χέρι που μένει όταν όλα φεύγουν.\nΓέλιο που μοιράζεται, \nπόνος που μικραίνει\nκαι μια καρδιά που λέει «είμαι εδώ»\nχωρίς να ρωτά.", author: "Δ.Μ.", label: "ΜΑΘΗΤΗΣ/ΤΡΙΑ", image: "https://drive.google.com/thumbnail?id=1KM5Pp0PihcH3EHsvnpFNZyBFoxFk3eTb&sz=w800", duration: 16000},
@@ -155,19 +152,6 @@
             document.getElementById('poem-author').innerText = poem.author ? "— " + poem.author : "";
             document.getElementById('author-label').innerText = poem.label;
             
-            const poemTextBlock = document.getElementById('poem-text-block');
-            
-            // Διατήρηση του ίδιου διάστιχου (leading-relaxed) παντού
-            if (currentIndex === POEMS.length - 1 && window.innerWidth < 768) {
-                pText.className = "text-[11px] text-blue-50 font-light italic leading-relaxed whitespace-pre-line m-0 pb-1"; // Ίδιο διάστιχο
-                poemTextBlock.style.height = "370px"; // Χρήση κενού χώρου για αποφυγή scroll
-                document.getElementById('author-container').style.marginTop = "0px";
-            } else {
-                pText.className = "text-[11px] md:text-[14px] lg:text-[15px] text-blue-50 font-light italic leading-relaxed whitespace-pre-line m-0 pb-1";
-                poemTextBlock.style.height = ""; // Επαναφορά
-                document.getElementById('author-container').style.marginTop = "";
-            }
-
             const img = document.getElementById('poem-img');
             img.style.opacity = '0';
             img.onload = () => img.style.opacity = '1';
